@@ -3,6 +3,8 @@ apply plugin: 'nebula-test-jar'
 
 sourceCompatibility = 1.6
 
+version = projectVersion
+
 jar {
   manifest {
     attributes("Implementation-Title": "Denominator", "Specification-Version": version, "Implementation-Version": version)

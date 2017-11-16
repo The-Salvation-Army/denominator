@@ -14,16 +14,34 @@ ext {
 }
 
 subprojects {
-    apply plugin: 'nebula.netflixoss'
+    apply plugin: 'maven-publish'
+    apply plugin: 'maven'
 
     repositories { 
         jcenter()
     }
     apply from: rootProject.file('dagger.gradle')
-    group = "com.netflix.${githubProjectName}" // TEMPLATE: Set to organization of project
+    group = "org.salvationarmy.${githubProjectName}" // TEMPLATE: Set to organization of project
     apply plugin: 'be.insaneprogramming.gradle.animalsniffer'
 
     animalsniffer { // Don't use apis that may not be available on Android
         signature = "org.codehaus.mojo.signature:java16:+@signature"
+    }
+
+    task writePom {
+        doLast {
+            pom {
+                project {
+                    inceptionYear '2017'
+                    licenses {
+                        license {
+                            name 'The Apache Software License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution 'repo'
+                        }
+                    }
+                }
+            }.writeTo("$buildDir/pom.xml")
+        }
     }
 }
