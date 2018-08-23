@@ -94,6 +94,15 @@ public interface UltraDNSRest {
   RRSetList getResourceRecordsOfZone(@Param("zoneName") String zoneName);
 
   /**
+   * Get the resource records given the zone name.
+   *
+   * @param zoneName name of the zone
+   * @return RRSetList object.
+   */
+  @RequestLine("GET /zones/{zoneName}/rrsets?limit={limit}&offset={offset}")
+  RRSetList getResourceRecordsOfZone(@Param("zoneName") String zoneName, @Param("limit") int limit, @Param("offset") int offset);
+
+  /**
    * Get the resource records given the zone name, hostName and rrtype.
    *
    * @param zoneName name of the zone

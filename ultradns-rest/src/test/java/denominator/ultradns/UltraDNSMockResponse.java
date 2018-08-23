@@ -195,6 +195,76 @@ public final class UltraDNSMockResponse {
             "    }\n" +
             "}\n";
 
+    public static final String GET_RESOURCE_RECORDS_PRESENT_PAGE_1 = "{\n" +
+            "    \"zoneName\": \"denominator.io.\",\n" +
+            "    \"rrSets\": [\n" +
+            "        {\n" +
+            "            \"ownerName\": \"pool_2.denominator.io.\",\n" +
+            "            \"rrtype\": \"A (1)\",\n" +
+            "            \"ttl\": 86400,\n" +
+            "            \"rdata\": [\n" +
+            "                \"1.1.1.1\",\n" +
+            "                \"2.2.2.2\",\n" +
+            "                \"3.3.3.3\",\n" +
+            "                \"4.4.4.4\",\n" +
+            "                \"5.5.5.5\",\n" +
+            "                \"6.6.6.6\",\n" +
+            "                \"7.7.7.7\"\n" +
+            "            ],\n" +
+            "            \"profile\": {\n" +
+            "                \"@context\": \"http://schemas.ultradns.com/RDPool.jsonschema\",\n" +
+            "                \"order\": \"ROUND_ROBIN\",\n" +
+            "                \"description\": \"1\"\n" +
+            "            }\n" +
+            "        }\n" +
+            "    ],\n" +
+            "    \"queryInfo\": {\n" +
+            "        \"sort\": \"OWNER\",\n" +
+            "        \"reverse\": false,\n" +
+            "        \"limit\": 500\n" +
+            "    },\n" +
+            "    \"resultInfo\": {\n" +
+            "        \"totalCount\": 900,\n" +
+            "        \"offset\": 0,\n" +
+            "        \"returnedCount\": 500\n" +
+            "    }\n" +
+            "}\n";
+
+    public static final String GET_RESOURCE_RECORDS_PRESENT_PAGE_2 = "{\n" +
+            "    \"zoneName\": \"denominator.io.\",\n" +
+            "    \"rrSets\": [\n" +
+            "        {\n" +
+            "            \"ownerName\": \"pool_2.denominator.io.\",\n" +
+            "            \"rrtype\": \"A (1)\",\n" +
+            "            \"ttl\": 86400,\n" +
+            "            \"rdata\": [\n" +
+            "                \"1.1.1.1\",\n" +
+            "                \"2.2.2.2\",\n" +
+            "                \"3.3.3.3\",\n" +
+            "                \"4.4.4.4\",\n" +
+            "                \"5.5.5.5\",\n" +
+            "                \"6.6.6.6\",\n" +
+            "                \"7.7.7.7\"\n" +
+            "            ],\n" +
+            "            \"profile\": {\n" +
+            "                \"@context\": \"http://schemas.ultradns.com/RDPool.jsonschema\",\n" +
+            "                \"order\": \"ROUND_ROBIN\",\n" +
+            "                \"description\": \"1\"\n" +
+            "            }\n" +
+            "        }\n" +
+            "    ],\n" +
+            "    \"queryInfo\": {\n" +
+            "        \"sort\": \"OWNER\",\n" +
+            "        \"reverse\": false,\n" +
+            "        \"limit\": 500\n" +
+            "    },\n" +
+            "    \"resultInfo\": {\n" +
+            "        \"totalCount\": 900,\n" +
+            "        \"offset\": 500,\n" +
+            "        \"returnedCount\": 400\n" +
+            "    }\n" +
+            "}\n";
+
     public static final String GET_RESOURCE_RECORDS_PRESENT = "{\n" +
             "    \"zoneName\": \"denominator.io.\",\n" +
             "    \"rrSets\": [\n" +

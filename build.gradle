@@ -22,11 +22,6 @@ subprojects {
     }
     apply from: rootProject.file('dagger.gradle')
     group = "org.salvationarmy.${githubProjectName}" // TEMPLATE: Set to organization of project
-    apply plugin: 'be.insaneprogramming.gradle.animalsniffer'
-
-    animalsniffer { // Don't use apis that may not be available on Android
-        signature = "org.codehaus.mojo.signature:java16:+@signature"
-    }
 
     task writePom {
         doLast {

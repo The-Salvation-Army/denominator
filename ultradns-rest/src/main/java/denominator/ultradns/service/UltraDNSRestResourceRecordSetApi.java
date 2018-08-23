@@ -1,35 +1,29 @@
 package denominator.ultradns.service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.HashSet;
-import java.util.Arrays;
-
-import javax.inject.Inject;
-
 import denominator.ResourceRecordSetApi;
+import denominator.ResourceTypeToValue.ResourceTypes;
 import denominator.model.ResourceRecordSet;
-import denominator.ultradns.service.integration.UltraDNSRest;
 import denominator.ultradns.exception.UltraDNSRestException;
 import denominator.ultradns.iterator.GroupByRecordNameAndTypeCustomIterator;
-import denominator.ultradns.model.RRSet;
-import denominator.ultradns.model.Record;
-import denominator.ultradns.util.RRSetUtil;
-import denominator.ultradns.model.RRSetList;
 import denominator.ultradns.model.Profile;
-import static denominator.common.Util.flatten;
+import denominator.ultradns.model.RRSet;
+import denominator.ultradns.model.RRSetList;
+import denominator.ultradns.model.Record;
+import denominator.ultradns.service.integration.UltraDNSRest;
+import denominator.ultradns.util.Constants;
+import denominator.ultradns.util.RRSetUtil;
+import org.apache.log4j.Logger;
+
+import javax.inject.Inject;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static denominator.ResourceTypeToValue.lookup;
 import static denominator.common.Preconditions.checkArgument;
 import static denominator.common.Preconditions.checkNotNull;
+import static denominator.common.Util.flatten;
 import static denominator.common.Util.nextOrNull;
 import static denominator.ultradns.exception.UltraDNSRestException.processUltraDnsException;
-
-import denominator.ResourceTypeToValue.ResourceTypes;
-import org.apache.log4j.Logger;
-import denominator.ultradns.util.Constants;
 
 public final class UltraDNSRestResourceRecordSetApi implements denominator.ResourceRecordSetApi {
 
@@ -55,11 +49,25 @@ public final class UltraDNSRestResourceRecordSetApi implements denominator.Resou
    */
   @Override
   public Iterator<ResourceRecordSet<?>> iterator() {
-    Iterator<Record> orderedRecords = RRSetUtil.buildRecords(api
-            .getResourceRecordsOfZone(zoneName)
-            .rrSets())
-            .iterator();
-    return new GroupByRecordNameAndTypeCustomIterator(orderedRecords);
+      int offset = 0;
+      int limit = 500;
+      int total;
+      List<RRSet> rrSets = new ArrayList<>();
+
+      do {
+          RRSetList interim = api.getResourceRecordsOfZone(zoneName, limit, offset);
+          rrSets.addAll(interim.getRrSets());
+          total = interim.getResultInfo().getTotalCount();
+          offset += limit;
+      }
+      while (offset <= total);
+
+      Iterator<Record> orderedRecords = RRSetUtil.buildRecords(
+              // Filter out APEXALIAS as this is a non-standard record type that denominator doesn't understand
+              rrSets.stream().filter(
+                      rrSet -> !rrSet.getRrtype().contains("APEXALIAS")).collect(Collectors.toList())
+      ).iterator();
+      return new GroupByRecordNameAndTypeCustomIterator(orderedRecords);
   }
 
   /**

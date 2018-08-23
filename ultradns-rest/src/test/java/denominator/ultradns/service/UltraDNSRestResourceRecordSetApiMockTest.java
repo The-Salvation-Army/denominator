@@ -1,7 +1,8 @@
 package denominator.ultradns.service;
 
 import com.squareup.okhttp.mockwebserver.MockResponse;
-
+import denominator.ResourceRecordSetApi;
+import denominator.ResourceTypeToValue.ResourceTypes;
 import denominator.model.ResourceRecordSet;
 import denominator.model.rdata.AData;
 import denominator.ultradns.MockUltraDNSRestServer;
@@ -9,27 +10,14 @@ import denominator.ultradns.UltraDNSMockResponse;
 import denominator.ultradns.exception.UltraDNSRestException;
 import org.junit.Rule;
 import org.junit.Test;
-
-import denominator.ResourceRecordSetApi;
 import org.junit.rules.ExpectedException;
 
 import java.util.Arrays;
 
-import denominator.ResourceTypeToValue.ResourceTypes;
-
-import static denominator.model.ResourceRecordSets.a;
-import static denominator.model.ResourceRecordSets.aaaa;
-import static denominator.model.ResourceRecordSets.ns;
-import static denominator.ultradns.UltraDNSMockResponse.GET_RESOURCE_RECORDS_PRESENT;
-import static denominator.ultradns.UltraDNSMockResponse.STATUS_SUCCESS;
-import static denominator.ultradns.UltraDNSMockResponse.POOL_WITH_ONE_RESOURCE_RECORDS;
-import static denominator.ultradns.UltraDNSMockResponse.RR_SET_LIST_WITH_ONE_NS_RECORD;
-import static denominator.ultradns.UltraDNSMockResponse.TTL_86400;
-import static denominator.ultradns.UltraDNSMockResponse.TTL_3600;
-import static denominator.ultradns.UltraDNSMockResponse.TTL_2400;
-import static org.assertj.core.api.Assertions.assertThat;
-
+import static denominator.model.ResourceRecordSets.*;
+import static denominator.ultradns.UltraDNSMockResponse.*;
 import static org.apache.http.HttpStatus.SC_NOT_FOUND;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class UltraDNSRestResourceRecordSetApiMockTest {
 
@@ -60,7 +48,8 @@ public class UltraDNSRestResourceRecordSetApiMockTest {
   @Test
   public void listWhenThereAreMatches() throws Exception {
     server.enqueueSessionResponse();
-    server.enqueue(new MockResponse().setBody(GET_RESOURCE_RECORDS_PRESENT));
+    server.enqueue(new MockResponse().setBody(GET_RESOURCE_RECORDS_PRESENT_PAGE_1));
+    server.enqueue(new MockResponse().setBody(GET_RESOURCE_RECORDS_PRESENT_PAGE_2));
 
     ResourceRecordSetApi api = server.connect().api()
             .basicRecordSetsInZone("denominator.io.");
@@ -69,7 +58,10 @@ public class UltraDNSRestResourceRecordSetApiMockTest {
     server.assertSessionRequest();
     server.assertRequest()
             .hasMethod("GET")
-            .hasPath("/zones/denominator.io./rrsets");
+            .hasPath("/zones/denominator.io./rrsets?limit=500&offset=0");
+    server.assertRequest()
+            .hasMethod("GET")
+            .hasPath("/zones/denominator.io./rrsets?limit=500&offset=500");
   }
 
   @Test

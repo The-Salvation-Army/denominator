@@ -11,7 +11,8 @@ public class RRSet {
     private List<String> rdata = new ArrayList<String>();
     private Profile profile;
 
-    public RRSet() { }
+    public RRSet() {
+    }
 
     public RRSet(Integer ttl, List<String> rdata) {
         this.ttl = ttl;
@@ -56,6 +57,16 @@ public class RRSet {
 
     public void setProfile(Profile profile) {
         this.profile = profile;
+    }
+
+    @Override
+    public String toString() {
+        String rdataOut = "";
+        for (String rdata : rdata) {
+            rdataOut += rdata;
+        }
+        return ownerName + ", " + rrtype + ", " + ttl + rdataOut;
+
     }
 
 }

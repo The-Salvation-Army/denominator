@@ -7,6 +7,7 @@ public class RRSetList {
 
     private String zoneName;
     private List<RRSet> rrSets;
+    private ResultInfo resultInfo;
 
     public String getZoneName() {
         return zoneName;
@@ -29,5 +30,13 @@ public class RRSetList {
             return getRrSets();
         }
         return new ArrayList<RRSet>();
+    }
+
+    public ResultInfo getResultInfo() {
+        return resultInfo;
+    }
+
+    public void setResultInfo(ResultInfo resultInfo) {
+        this.resultInfo = resultInfo;
     }
 }
