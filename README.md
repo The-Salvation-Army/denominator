@@ -6,6 +6,10 @@ Denominator is a portable Java library for manipulating DNS clouds. Denominator 
 
 [![Build Status](https://netflixoss.ci.cloudbees.com/job/denominator-master/badge/icon)](https://netflixoss.ci.cloudbees.com/job/denominator-master/)
 
+## Compilation
+To compile this project, run `gradle clean install` on the root of the project. Once the JARs have been built, run the `gradle 
+writePom` task to generate pom.xml files for each module that should be uploaded with the JARs to Nexus. 
+
 ## Command line
 For your convenience, the denominator cli is a [single executable file](http://skife.org/java/unix/2011/06/20/really_executable_jars.html). Under the hood, the cli uses [airline](https://github.com/airlift/airline) to look and feel like dig or git.
 
